@@ -1,0 +1,92 @@
+<html layout:decorate="~{layouts/default.html}"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<title>Picture Frames Manager</title>
+</head>
+<body>
+	<div class="row" layout:fragment="content">
+		<div class="col-md-12">
+
+			<table data-toggle="table" class="table table-striped">
+				<thead>
+					<tr>
+						<th colspan="6">
+							<form th:action="@{/searchPictureFrames}" method="post">
+								<div class="input-group">
+									<input type="text" th:value="${searchString}"
+										class="form-control" placeholder="Filtertext"
+										name="searchString">
+									<div class="input-group-append">
+										<button class="btn btn-outline-secondary" type="submit">
+											Filter</button>
+									</div>
+								</div>
+							</form>
+						</th>
+					</tr>
+				</thead>
+				<thead>
+					<tr>
+						<th data-sortable="true">Product Number</th>
+						<th data-sortable="true">Product Name</th>
+						<th data-sortable="true">Height</th>
+						<th data-sortable="true">Width</th>
+						<th data-sortable="true">Format</th>
+						<th data-sortable="true">Material</th>
+						<th data-sortable="true">Colour</th>
+						<th data-sortable="true">Only one Picture?</th>
+						<th class="text-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr
+						th:each="pictureFrames : ${#request.getAttribute('pictureFramesEntries')}">
+						<td th:text="${pictureFrames.productnumber}">000</td>
+						<td th:text="${pictureFrames.productname}">PictureFrame</td>
+						<td th:text="${pictureFrames.heightWrapper}">500</td>
+						<td th:text="${pictureFrames.widthWrapper}">600</td>
+						<td th:text="${pictureFrames.format}">Letter</td>
+						<td th:text="${pictureFrames.material}">Wood</td>
+						<td th:text="${pictureFrames.colour}">Red</td>
+						<!-- <td th:text="${pictureFrames.onlyOnePictureWrapper}">true</td> -->
+
+						<td><th:block
+								th:replace="fragments/nightshift.html :: nightshift (pictureFrames=${pictureFrames})"></th:block>
+						</td>
+
+						<td><a			
+							th:href="@{/deletePictureFrame(productnumber=${pictureFrames.productnumber})}"
+							class="btn btn-xs btn-danger"> <span
+								class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+								Delete
+						</a> <a th:href="@{/editPictureFrames(productnumber=${pictureFrames.productnumber})}"
+							class="btn btn-xs btn-success"> <span
+								class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+								Edit
+						</a></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
+<title>Picture Frame Manager</title>
+<div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
+</head>
+<body>
+	<div class="container" role="main">
+
+		<div class="page-header">
+			<img src="logo_fh.jpg">
+		</div>
+
+		<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+			class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
+
+		<!--  Warning message ----------------------------------------------------------- -->
+		<div th:unless="${warningMessage} == null"
+			th:utext="${warningMessage}" class="alert alert-warning"
+			role="warning"></div>
+		<!--  Warning message ----------------------------------------------------------- -->
+
+		<!--   message ----------------------------------------------------------- -->
+		<div th:unless="${message} == null" th:utext="${message}"
+			class="alert alert-success" role="warning"></div>
+		<!--   message ----------------------------------------------------------- -->
+
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+
+		<!--  1 simple button ----------------------------------------------------------- 
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<p>
+					<a href="fillPictureFrameList">
+						<button type="button" class="btn btn-success">Fill List</button>
+					</a>
+				</p>
+			</div>
+		</div>
+		  1 simple button ----------------------------------------------------------- -->
+
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+
+				<table data-toggle="table" class="table table-striped">
+					<thead>
+						<tr>
+							<th>Product Number</th>
+							<th>Product Name</th>
+							<th>Height</th>
+							<th>Width</th>
+							<th>OnlyOnePicture?</th>
+							<th>Configuration</th>
+							<th>Producer</th>
+							<!-- <th>Vendor</th> -->
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--  list all items ----------------------------------------------------------- -->
+						<tr th:each="pictureFrame : ${pictureFrames}">
+							<!--<td th:text="${pictureFrame.id}"></td> -->
+							<td
+								th:text="${pictureFrame.productNumber}"></td>
+							<td
+								th:text="${pictureFrame.productName}"></td>
+							<td th:text="${pictureFrame.height}"></td>
+							<td th:text="${pictureFrame.width}"></td>
+							<td th:text="${pictureFrame.onlyOnePicture}"></td>
+
+							<td
+								th:utext="${pictureFrame.configuration.material+'&'+pictureFrame.configuration.colour +'&'+ pictureFrame.configuration.format}">
+							</td>
+
+							<td th:text="${pictureFrame.producer.companyName}"></td>
+							<!-- <td>
+								<div th:each="vendor : ${pictureFrame.vendors}">
+									<span th:text="${vendor.vendorName}"></span>
+								</div>
+							</td> -->
+							<td><a th:href="@{/deletePictureFrame(id=${pictureFrame.id})}">Delete</a></td>
+
+						</tr>
+						<!--  list all items ----------------------------------------------------------- -->
+					</tbody>
+				</table>
+
+				<!--  list all Producers ----------------------------------------------------------- -->
+				<div class="col-md-4 col-md-offset-2">
+					<h1>Producers</h1>
+					<div class="tree">
+						<ul>
+							<li th:each="producer : ${producers}"><a href="#"
+								th:text="${producer.companyName}"> </a>
+								<ul>
+									<li th:each="pictureFrame : ${producer.pictureFrames}"><a
+										href="#" th:text="${pictureFrame.productName}"> </a></li>
+								</ul></li>
+						</ul>
+					</div>
+				</div>
+
+				<!--  list all Producers ----------------------------------------------------------- -->
+
+				<!--  list all Vendors ----------------------------------------------------------- -->
+				<div class="col-md-4 col-md-offset-1">
+					<h1>Vendors</h1>
+					<div class="tree">
+						<ul>
+							<li th:each="vendor : ${vendors}"><a href="#"
+								th:text="${vendor.vendorName}"></a>
+								<ul>
+									<li th:each="pictureFrame : ${vendor.pictureFrames}"><a
+										href="#" th:text="${pictureFrame.productName}"> </a></li>
+								</ul></li>
+						</ul>
+					</div>
+				</div>
+				<!--  list all Vendors ----------------------------------------------------------- -->
+
+			</div>
+		</div>
+	</div>
+	<!--  End of container -->
+	<div th:replace="~{includes/bootstrap :: bootstrapJS}" />
+</body>
+</html>

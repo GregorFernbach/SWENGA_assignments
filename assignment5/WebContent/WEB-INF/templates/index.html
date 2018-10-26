@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="~{includes/bootstrapMeta :: bootstrapMeta}" />
+<title>Picture Frame Manager</title>
+<div th:replace="~{includes/bootstrapCSS :: bootstrapCSS}" />
+</head>
+<body>
+	<div class="container" role="main">
+
+
+
+		<!--  1 simple button ----------------------------------------------------------- -->
+		<div class="row">
+			<div class="col-md-10">
+				<h1>Spring Data JPA</h1>
+			</div>
+
+			<div class="col-md-2">
+				<a href="fillList">
+					<button type="button" class="btn btn-success">Fill List</button>
+				</a>
+			</div>
+		</div>
+
+		<!--  search by Id ----------------------------------------------------------- -->
+		<form action="findById" method="post">
+			<div class="form-row">
+				<div class="form-group col-sm-12">
+					<label for="id">Find by Id:</label>
+					<input id="id" type="text" class="form-control" name="id">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-sm-12">
+					<input class="btn btn-primary" type="submit" value="Do it">
+				</div>
+			</div>
+		</form>
+		<!--  paging example ----------------------------------------------------------- -->
+		<form action="getPage" method="post">
+			<div class="form-row">
+				<div class="form-group col-sm-6">
+					<label for="page">Page:</label>
+					<input id="page" type="text" class="form-control" name="page">
+				</div>		
+				<div class="form-group col-sm-6">
+					<label for="size">Size:</label>
+					<input id="size" type="text" class="form-control" name="size">	
+				</div>
+			</div>	
+			<div class="form-row">
+				<div class="form-group col-sm-12">
+			  		<input class="btn btn-primary" type="submit" value="Do it">
+				</div>
+			</div>
+		</form>
+
+
+		<!--  Search + Fill ----------------------------------------------------------- -->
+			<form method="post" action="find">
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<label for="searchType">Search:</label> 
+						<select id="searchType" class="form-control" name="searchType">
+							<option value="query1" selected="selected">Show all Picture Frames</option>							
+							<option value="query2">Search Picture Frames by Product Name (exact name)</option>
+							<option value="query3">Search Picture Frames by Format Or Colour (exact name)</option>
+							<option value="query4">Search Picture Frames by Product Name like</option>
+							<option value="query5">Filter Picture Frames by Height smaller than your number</option>
+							<option value="query6">Filter Picture Frames by Height bigger than your number with a named query</option>
+							<option value="query7">Delete Picture Frames by Product Name (exact name)</option>
+							<option value="query8">Search Picture Frames by Width bigger than your number, ordered descending by width</option>
+							<option value="query9">Search the top twenty Picture Frames by format (exact name)</option>
+							<option value="query10">Delete Picture Frames by Colour like</option>
+							<option value="query11">Count Picture Frames by Producer Name (exact name)</option>
+						</select>
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="searchString">Text:</label>
+						<input id="searchString" class="form-control" type="text" name="searchString" size="30" value="text">
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="searchInt">Numbers:</label>
+						<input id="searchInt" class="form-control" type="number" name="searchInt" step="1" min="0" max ="500" value="1">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-12">
+						<input class="btn btn-primary" type="submit" value="Do it">	
+					</div>
+				</div>
+			</form>
+
+			<!--  Search + Fill ----------------------------------------------------------- -->
+			<h3>Count: <span th:text="${count}"></span></h3>
+
+		<div class="row">
+			<div class="col-md-10 offset-md-1">
+
+				<table data-toggle="table" class="table table-striped">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Product Name</th>
+							<th>Format</th>
+							<th>Colour</th>
+							<th>Height</th>
+							<th>Width</th>
+							<th>Producer</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--  list all items ----------------------------------------------------------- -->
+						<tr th:each="pictureFrame : ${pictureFrames}">
+							<td th:text="${pictureFrame.id}"></td>
+							<td th:text="${pictureFrame.productName}"></td>
+							<td th:text="${pictureFrame.format}"></td>
+							<td th:text="${pictureFrame.colour}"></td>
+							<td th:text="${pictureFrame.height}"></td>
+							<td th:text="${pictureFrame.width}"></td>
+							<td th:text="${pictureFrame.producer.name}"></td>
+							<td><a th:href="@{/delete(id=${pictureFrame.id})}" class="btn btn-danger">Delete</a></td>
+							
+						</tr>
+						<!--  list all items ----------------------------------------------------------- -->
+					</tbody>
+				</table>
+								
+			</div>
+		</div>
+	</div>
+	<!--  End of container -->
+	<div th:replace="~{includes/bootstrapJS :: bootstrapJS}" />
+</body>
+</html>

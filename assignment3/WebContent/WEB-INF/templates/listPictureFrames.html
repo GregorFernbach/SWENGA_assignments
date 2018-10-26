@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<div th:include="~{includes/bootstrap :: bootstrapMeta}" th:remove="tag" />
+<title>Picture Frame Manager</title>
+<div th:include="~{includes/bootstrap :: bootstrapCSS}" th:remove="tag" />
+</head>
+
+<body>
+	<div class="container" role="main">
+
+		<div class="page-header">
+			<h1>Picture Frame Management</h1>
+			<a href="listPictureFrames">Bring me back to the Management
+				Interface</a>
+			<!-- This is important so that you can always get back to the
+			Management User Interface when you for example did a search -->
+		</div>
+
+		<!-- include the Nav bar fragment-->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+
+		<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+			class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
+
+		<!--  Warning message ----------------------------------------------------------- -->
+		<div th:unless="${warningMessage} == null"
+			th:utext="${warningMessage}" class="alert alert-warning"
+			role="warning"></div>
+		<!--  Warning message ----------------------------------------------------------- -->
+
+		<!--   message ----------------------------------------------------------- -->
+		<div th:unless="${message} == null" th:utext="${message}"
+			class="alert alert-success" role="warning"></div>
+		<!--   message ----------------------------------------------------------- -->
+
+
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+
+				<table data-toggle="table" class="table table-striped">
+					<thead>
+						<tr>
+							<th data-sortable="true">Product Number</th>
+							<th data-sortable="true">Product Name</th>
+							<th data-sortable="true">Height</th>
+							<th data-sortable="true">Width</th>
+							<th data-sortable="true">Format</th>
+							<th data-sortable="true">Material</th>
+							<th data-sortable="true">Colour</th>
+							<th data-sortable="true">OnlyOnePicture</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--  list all items ----------------------------------------------------------- -->
+						<tr
+							th:each="pictureFrame : ${#request.getAttribute('pictureFrames')}">
+							<td th:text="${pictureFrame.productNumber}"></td>
+							<td th:text="${pictureFrame.productName}"></td>
+							<td th:text="${pictureFrame.height}"></td>
+							<td th:text="${pictureFrame.width}"></td>
+							<td th:text="${pictureFrame.format}"></td>
+							<td th:text="${pictureFrame.material}"></td>
+							<td th:text="${pictureFrame.colour}"></td>
+							<!--<td th:text="${pictureFrame.onlyOnePicture}"></td>-->
+							<td><th:block
+									th:replace="fragments/numberOfPictures.html :: numberOfPictures (pictureFrame=${pictureFrame})"></th:block>
+							</td>
+
+							<td><a
+								th:href="@{/editPictureFrame(productNumber=${pictureFrame.productNumber})}"
+								class="btn btn-xs btn-success"> <span
+									class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+									Edit
+							</a> <a
+								th:href="@{/deletePictureFrame(productNumber=${pictureFrame.productNumber})}"
+								class="btn btn-xs btn-danger"> <span
+									class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									Delete
+							</a></td>
+						</tr>
+						<!--  list all items ----------------------------------------------------------- -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+</body>
+
+</html>
